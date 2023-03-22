@@ -99,6 +99,16 @@ interface PollOptions {
   voter_count: number;
 }
 
+interface Document {
+  file_name: string;
+  mime_type: string;
+  thumbnail?: Thumbnail;
+  thumb?: Thumbnail;
+  file_id: string;
+  file_unique_id: string;
+  file_size: 16120;
+}
+
 interface Thumbnail {
   file_id: string;
   file_unique_id: string;
