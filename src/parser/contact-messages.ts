@@ -1,12 +1,21 @@
 import {parseQuoted} from './quoted-messages.js';
 
-export const parseTextMessage = (obj: TextMessage) => {
+export const parseContactMessage = (obj: ContactMessage) => {
+  console.log(obj);
   const {
-    message: {from, text, date, chat, message_id},
+    message: {from, contact, date, chat, message_id},
     update_id,
   } = obj;
   const {id: chatId, type, first_name: chatName, title} = chat;
   const {id: fromId, is_bot: isBot, first_name: senderName} = from;
+
+  const contactMessage = {
+    phoneNumber: contact.phone_number,
+    firstName: contact.first_name,
+    lastName: contact.last_name || null,
+    isRegistered: contact.user_id ? true : false,
+    vcard: contact.vcard,
+  };
 
   const message = {
     date,
@@ -23,7 +32,7 @@ export const parseTextMessage = (obj: TextMessage) => {
       groupSubject: title ? title : null,
     },
     message: {
-      conversation: {text},
+      contactMessage,
       id: message_id,
     },
   };
@@ -38,5 +47,5 @@ export const parseTextMessage = (obj: TextMessage) => {
 
   return {
     ...message,
-  } as TextMessageInfo;
+  } as ContactMessageInfo;
 };

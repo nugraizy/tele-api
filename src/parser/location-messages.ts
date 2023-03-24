@@ -1,12 +1,17 @@
 import {parseQuoted} from './quoted-messages.js';
 
-export const parseTextMessage = (obj: TextMessage) => {
+export const parseLocationMessage = (obj: LocationMessage) => {
   const {
-    message: {from, text, date, chat, message_id},
+    message: {from, location, date, chat, message_id},
     update_id,
   } = obj;
   const {id: chatId, type, first_name: chatName, title} = chat;
   const {id: fromId, is_bot: isBot, first_name: senderName} = from;
+
+  const locationMessage = {
+    latitude: location.latitude,
+    longitude: location.longitude,
+  };
 
   const message = {
     date,
@@ -23,7 +28,7 @@ export const parseTextMessage = (obj: TextMessage) => {
       groupSubject: title ? title : null,
     },
     message: {
-      conversation: {text},
+      locationMessage,
       id: message_id,
     },
   };
@@ -38,5 +43,5 @@ export const parseTextMessage = (obj: TextMessage) => {
 
   return {
     ...message,
-  } as TextMessageInfo;
+  } as LocationMessageInfo;
 };

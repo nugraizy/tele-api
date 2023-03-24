@@ -1,4 +1,4 @@
-interface DocumentMessage {
+interface AnimationsMessage {
   update_id: number;
   message: {
     message_id: number;
@@ -26,30 +26,30 @@ interface DocumentMessage {
     forward_date?: number;
     reply_to_message?: ExtendedContext;
     entities?: Entities[];
+    animation: Animation;
     document: Document;
   };
 }
 
-interface DocumentMessageInfo extends MessageInfoParsed {
+interface AnimationMessageInfo extends MessageInfoParsed {
   message: {
-    documentMessage?: DocumentParsed;
+    animationMessage?: {
+      animation: AnimationParsed;
+      document: DocumentParsed;
+    };
     id: number;
   };
 }
 
-interface DocumentParsed {
+interface AnimationParsed {
   fileName: string;
+  duration: number;
   mimetype: string;
   id: string;
   size: number;
   uid: string;
-  thumbnail?: {
-    id: string;
-    size: number;
-    uid: string;
-    dimention: {
-      width: number;
-      height: number;
-    };
+  dimention: {
+    width: number;
+    height: number;
   };
 }

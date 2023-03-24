@@ -1,5 +1,12 @@
 import EventEmitter from 'events';
 
-export const emitHandler = (eventName: string, handler: any) => {
-  new EventEmitter().emit(eventName, handler);
+const ev = new EventEmitter();
+
+export const emitHandler = (
+  eventName: string,
+  message: ParsedMessageInfo | undefined
+) => {
+  ev.emit(eventName, message);
 };
+
+export {ev};

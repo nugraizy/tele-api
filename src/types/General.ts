@@ -1,12 +1,45 @@
+type Type = 'private' | 'group' | 'supergroup';
+type PollType = 'regular' | 'quiz';
+
+type MessageInfo = AnimationsMessage &
+  AudioMessage &
+  ContactMessage &
+  DocumentMessage &
+  ImageMessage &
+  LocationMessage &
+  PollMessage &
+  StickerMessage &
+  TextMessage &
+  VideoMessage &
+  VoiceMessage;
+
+type ParsedMessageInfo = AnimationMessageInfo &
+  AudioMessageInfo &
+  ContactMessageInfo &
+  DocumentMessageInfo &
+  LocationMessageInfo &
+  ImageMessageInfo &
+  PollMessageInfo &
+  StickerMessageInfo &
+  TextMessageInfo &
+  VoiceMessageInfo;
+
 interface ExtendedContext {
   message_id: number;
   from: From;
   chat: Chat;
   date: number;
+  message_thread_id?: number;
   text?: string;
   voice?: Voice;
   photo?: Photo[];
   location?: Location;
+  sticker?: Sticker;
+  video?: Video;
+  document?: Document;
+  contact?: Contact;
+  poll?: Poll;
+  animation?: Animation;
 }
 
 interface Entities {
@@ -24,7 +57,8 @@ interface From {
 
 interface Chat {
   id: number;
-  first_name: string;
+  first_name?: string;
+  title?: string;
   type: Type;
 }
 
@@ -87,7 +121,7 @@ interface Poll {
   total_voter_count: number;
   is_closed: boolean;
   is_anonymous: boolean;
-  type: 'regular' | 'quiz';
+  type: PollType;
   allows_multiple_answers: boolean;
   correct_option_id?: number;
   explanation?: string;
@@ -106,7 +140,33 @@ interface Document {
   thumb?: Thumbnail;
   file_id: string;
   file_unique_id: string;
-  file_size: 16120;
+  file_size: number;
+}
+
+interface Sticker {
+  width: number;
+  height: number;
+  emoji: string;
+  set_name: string;
+  is_animated: boolean;
+  is_video: boolean;
+  type: string;
+  thumbnail: Thumbnail;
+  thumb: Thumbnail;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+}
+
+interface Animation {
+  file_name: string;
+  mime_type: string;
+  duration: number;
+  width: number;
+  height: number;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
 }
 
 interface Thumbnail {
@@ -115,4 +175,19 @@ interface Thumbnail {
   file_size: number;
   width: number;
   height: number;
+}
+
+interface MessageInfoParsed {
+  date: number;
+  senderName: string;
+  chatName: string;
+  isBot: boolean;
+  key: {
+    id: number;
+    participant: number;
+    from: number;
+    type: string;
+    isGroup: boolean;
+    groupSubject: string | null;
+  };
 }

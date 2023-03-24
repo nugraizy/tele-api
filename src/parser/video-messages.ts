@@ -1,12 +1,33 @@
 import {parseQuoted} from './quoted-messages.js';
 
-export const parseTextMessage = (obj: TextMessage) => {
+export const parseVideoMessage = (obj: VideoMessage) => {
   const {
-    message: {from, text, date, chat, message_id},
+    message: {from, video, date, chat, message_id},
     update_id,
   } = obj;
   const {id: chatId, type, first_name: chatName, title} = chat;
   const {id: fromId, is_bot: isBot, first_name: senderName} = from;
+
+  const videoMessage = {
+    duration: video.duration,
+    mimetype: video.mime_type,
+    id: video.file_id,
+    uid: video.file_unique_id,
+    size: video.file_size,
+    dimention: {
+      width: video.height,
+      height: video.height,
+    },
+    thumbnail: {
+      id: video.thumbnail.file_id,
+      size: video.thumbnail.file_size,
+      uid: video.thumbnail.file_unique_id,
+      dimention: {
+        width: video.thumbnail.width,
+        height: video.thumbnail.height,
+      },
+    },
+  };
 
   const message = {
     date,
@@ -23,7 +44,7 @@ export const parseTextMessage = (obj: TextMessage) => {
       groupSubject: title ? title : null,
     },
     message: {
-      conversation: {text},
+      videoMessage,
       id: message_id,
     },
   };
@@ -38,5 +59,5 @@ export const parseTextMessage = (obj: TextMessage) => {
 
   return {
     ...message,
-  } as TextMessageInfo;
+  } as VideoMessageInfo;
 };

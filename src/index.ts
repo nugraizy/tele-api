@@ -1,41 +1,56 @@
-import {config} from 'dotenv';
+import type {Logger} from 'pino';
+import {ev} from './event/messages-received.js';
+import {setupConnection} from './utils/connection.js';
+import {sendMessage} from './client/send-message.js';
 
-config();
+type Event = 'message' | 'deleted' | 'participant';
+interface TelegramInitConfig {
+  token: string;
+  webhookURL: string;
+  serverURL: string;
+  logger?: Logger;
+}
+interface IEvent {
+  on: (event: Event, handler: any) => void;
+  off: (event: Event, handler: any) => void;
+}
 
-import express from 'express';
-import axios from 'axios';
-const {PORT, TELEGRAM_TOKEN, SERVER_URL} = process.env;
-
-const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
-const URI = `/webhook/${TELEGRAM_TOKEN}`;
-const webhookURL = `${SERVER_URL}${URI}`;
-
-const app = express();
-
-app.use(express.json());
-
-const setupWebhook = async () => {
-  try {
-    const {data} = await axios.get(
-      `${TELEGRAM_API}/setWebhook?url=${webhookURL}&drop_pending_updates=true`
-    );
-    console.log(data);
-  } catch (error) {
-    return error;
+export class TelegramInit {
+  token: string;
+  webhookURL: string;
+  serverURL: string;
+  logger?: Logger;
+  constructor({token, webhookURL, serverURL, logger}: TelegramInitConfig) {
+    this.token = token;
+    this.webhookURL = webhookURL;
+    this.serverURL = serverURL;
+    this.logger = logger;
   }
-};
+}
 
-app.post(URI, (req, res) => {
-  console.log(JSON.stringify(req.body, undefined, 2));
+export const tokens = new Map();
+export class TelegramAPI {
+  setupConnection;
+  ev: IEvent = {
+    on: (event: Event, handler: (msg: MessageInfo) => {}) => {},
+    off: (event: Event, handler: (msg: MessageInfo) => {}) => {},
+  };
+  client: any;
+  logger;
+  constructor(config: TelegramInitConfig) {
+    if (config.logger) {
+      this.logger = config.logger;
+    }
+    tokens.set('SERVER_URL', config.serverURL);
+    tokens.set('BOT_TOKEN', config.token);
+    this.setupConnection = async () =>
+      setupConnection(config.token, config.webhookURL);
 
-  res.status(200).send('ok');
-});
+    this.ev.on = (event: Event, handler: (msg: MessageInfo) => {}) =>
+      ev.on(event, handler);
+    this.ev.off = (event: Event, handler: (msg: MessageInfo) => {}) =>
+      ev.off(event, handler);
 
-app.listen(PORT, async () => {
-  try {
-    console.log(`Server is up and Running at PORT : ${PORT}`);
-    await setupWebhook();
-  } catch (error: any) {
-    console.log(error.message);
+    this.client = {sendMessage};
   }
-});
+}

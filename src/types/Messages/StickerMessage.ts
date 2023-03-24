@@ -1,4 +1,4 @@
-interface DocumentMessage {
+interface StickerMessage {
   update_id: number;
   message: {
     message_id: number;
@@ -26,24 +26,27 @@ interface DocumentMessage {
     forward_date?: number;
     reply_to_message?: ExtendedContext;
     entities?: Entities[];
-    document: Document;
+    sticker: Sticker;
   };
 }
 
-interface DocumentMessageInfo extends MessageInfoParsed {
+interface StickerMessageInfo extends MessageInfoParsed {
   message: {
-    documentMessage?: DocumentParsed;
+    stickerMessage?: StickerParsed;
     id: number;
   };
 }
 
-interface DocumentParsed {
-  fileName: string;
-  mimetype: string;
+interface StickerParsed {
+  emoji: string;
   id: string;
-  size: number;
   uid: string;
-  thumbnail?: {
+  size: number;
+  setName: string;
+  isAnimated: boolean;
+  isVideo: boolean;
+  type: string;
+  thumbnail: {
     id: string;
     size: number;
     uid: string;
@@ -51,5 +54,9 @@ interface DocumentParsed {
       width: number;
       height: number;
     };
+  };
+  dimention: {
+    width: number;
+    height: number;
   };
 }

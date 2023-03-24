@@ -1,12 +1,24 @@
 import {parseQuoted} from './quoted-messages.js';
 
-export const parseTextMessage = (obj: TextMessage) => {
+export const parseImageMessage = (obj: ImageMessage) => {
   const {
-    message: {from, text, date, chat, message_id},
+    message: {from, photo, date, chat, message_id, caption},
     update_id,
   } = obj;
   const {id: chatId, type, first_name: chatName, title} = chat;
   const {id: fromId, is_bot: isBot, first_name: senderName} = from;
+
+  const len = photo.length;
+  const imageMessage = {
+    caption,
+    id: photo[len - 1].file_id,
+    size: photo[len - 1].file_size,
+    uid: photo[len - 1].file_unique_id,
+    dimention: {
+      width: photo[len - 1].width,
+      height: photo[len - 1].height,
+    },
+  };
 
   const message = {
     date,
@@ -23,7 +35,7 @@ export const parseTextMessage = (obj: TextMessage) => {
       groupSubject: title ? title : null,
     },
     message: {
-      conversation: {text},
+      imageMessage,
       id: message_id,
     },
   };
@@ -38,5 +50,5 @@ export const parseTextMessage = (obj: TextMessage) => {
 
   return {
     ...message,
-  } as TextMessageInfo;
+  } as ImageMessageInfo;
 };
