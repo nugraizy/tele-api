@@ -13,16 +13,19 @@ type MessageInfo = AnimationsMessage &
   VideoMessage &
   VoiceMessage;
 
-type ParsedMessageInfo = AnimationMessageInfo &
-  AudioMessageInfo &
-  ContactMessageInfo &
-  DocumentMessageInfo &
-  LocationMessageInfo &
-  ImageMessageInfo &
-  PollMessageInfo &
-  StickerMessageInfo &
-  TextMessageInfo &
-  VoiceMessageInfo;
+type ParsedMessageInfo =
+  | (AnimationMessageInfo &
+      AudioMessageInfo &
+      ContactMessageInfo &
+      DocumentMessageInfo &
+      LocationMessageInfo &
+      ImageMessageInfo &
+      PollMessageInfo &
+      StickerMessageInfo &
+      TextMessageInfo &
+      VideoMessageInfo &
+      VoiceMessageInfo)
+  | undefined;
 
 interface ExtendedContext {
   message_id: number;
@@ -30,6 +33,8 @@ interface ExtendedContext {
   chat: Chat;
   date: number;
   message_thread_id?: number;
+  caption?: string;
+  audio?: Audio;
   text?: string;
   voice?: Voice;
   photo?: Photo[];

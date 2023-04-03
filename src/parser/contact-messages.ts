@@ -1,7 +1,6 @@
 import {parseQuoted} from './quoted-messages.js';
 
 export const parseContactMessage = (obj: ContactMessage) => {
-  console.log(obj);
   const {
     message: {from, contact, date, chat, message_id},
     update_id,

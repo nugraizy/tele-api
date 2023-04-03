@@ -33,6 +33,9 @@ interface StickerMessage {
 interface StickerMessageInfo extends MessageInfoParsed {
   message: {
     stickerMessage?: StickerParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

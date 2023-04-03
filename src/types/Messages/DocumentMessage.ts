@@ -33,6 +33,9 @@ interface DocumentMessage {
 interface DocumentMessageInfo extends MessageInfoParsed {
   message: {
     documentMessage?: DocumentParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

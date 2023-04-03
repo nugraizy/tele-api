@@ -33,6 +33,9 @@ interface PollMessage {
 interface PollMessageInfo extends MessageInfoParsed {
   message: {
     pollMessage?: PollParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

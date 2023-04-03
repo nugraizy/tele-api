@@ -7,6 +7,7 @@ import {parseLocationMessage} from './location-messages.js';
 import {parsePollMessage} from './poll-messages.js';
 import {parseStickerMessage} from './sticker-messages.js';
 import {parseTextMessage} from './text-messages.js';
+import {parseVideoMessage} from './video-messages.js';
 import {parseVoiceMessage} from './voice-messages.js';
 
 export const parseMessages = (obj: MessageInfo) => {
@@ -46,5 +47,7 @@ export const parseMessages = (obj: MessageInfo) => {
     return parseTextMessage(obj) as TextMessageInfo;
   } else if (voice) {
     return parseVoiceMessage(obj) as VoiceMessageInfo;
+  } else if (video) {
+    return parseVideoMessage(obj) as VideoMessageInfo;
   }
 };

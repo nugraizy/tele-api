@@ -33,6 +33,9 @@ interface VideoMessage {
 interface VideoMessageInfo extends MessageInfoParsed {
   message: {
     videoMessage?: VideoParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

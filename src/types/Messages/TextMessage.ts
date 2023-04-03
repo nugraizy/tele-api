@@ -35,6 +35,9 @@ interface TextMessageInfo extends MessageInfoParsed {
     conversation?: {
       text: string;
     };
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

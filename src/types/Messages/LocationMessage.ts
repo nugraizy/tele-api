@@ -33,6 +33,9 @@ interface LocationMessage {
 interface LocationMessageInfo extends MessageInfoParsed {
   message: {
     locationMessage?: Location;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

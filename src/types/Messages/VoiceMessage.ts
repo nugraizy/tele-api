@@ -32,6 +32,9 @@ interface VoiceMessage {
 interface VoiceMessageInfo extends MessageInfoParsed {
   message: {
     voiceMessage?: VoiceParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

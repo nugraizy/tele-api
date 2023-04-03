@@ -34,6 +34,9 @@ interface ImageMessage {
 interface ImageMessageInfo extends MessageInfoParsed {
   message: {
     imageMessage?: ImageParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

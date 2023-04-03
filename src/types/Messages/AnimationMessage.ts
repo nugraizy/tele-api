@@ -37,6 +37,9 @@ interface AnimationMessageInfo extends MessageInfoParsed {
       animation: AnimationParsed;
       document: DocumentParsed;
     };
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }

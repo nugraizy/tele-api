@@ -33,6 +33,9 @@ interface ContactMessage {
 interface ContactMessageInfo extends MessageInfoParsed {
   message: {
     contactMessage?: ContactParsed;
+    contextInfo?: {
+      quotedMessage?: QuotedMessageParsed;
+    };
     id: number;
   };
 }
